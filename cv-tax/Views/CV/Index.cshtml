@@ -1,0 +1,30 @@
+﻿@model CVModel
+
+@{
+    ViewData["Title"] = "CV";
+}
+
+<h1>David Bazan</h1>
+
+<h2><b>Profile</b></h2>
+<p>@Model.Profile</p>
+
+<h2><b>Projects</b></h2>
+@foreach (var project in Model.Projects) {
+    <p style="white-space: pre-line;">@project</p>
+}
+
+<h2><b>Education</b></h2>
+@foreach (var center in Model.Education) {
+    <p style="white-space: pre-line;">@center</p>
+}
+
+<h2><b>Courses</b></h2>
+@foreach (var course in Model.Courses) {
+    <p style="white-space: pre-line;">@course</p>
+}
+
+
+
+
+

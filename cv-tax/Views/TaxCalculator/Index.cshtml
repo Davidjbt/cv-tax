@@ -1,0 +1,24 @@
+﻿@model TaxCalculatorModel
+@{
+    ViewData["Title"] = "Tax Calculator";
+}
+
+<form method="post">
+
+    <label asp-for="Income">Income: £</label>
+    <input asp-for="Income"/>
+    <span asp-validation-for="Income" class="text-danger"></span>
+
+    <br/>
+
+    <label asp-for="SalaryInterval">Salary Interval: </label>
+    <select asp-for="SalaryInterval" asp-items="Html.GetEnumSelectList<SalaryInterval>()"></select>
+    <span asp-validation-for="SalaryInterval" class="text-danger"></span>
+    
+    <br/>
+
+    <button type="submit">Submit</button>
+</form>
+
+<p>Highest Tax Rate (applied): @Model.TaxRate%</p>
+<p>Total Tax: @Model.TotalTax.ToString("C")</p>
