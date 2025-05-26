@@ -1,0 +1,15 @@
+﻿@model List<PictureModel>
+@{
+    ViewData["Title"] = "Photo Gallery";
+}
+
+@foreach(var picture in Model) {
+    <img src="/gallery/@picture.FilePath" alt="Picture" style="width:200px;height:auto"/>
+}
+
+
+<form enctype="multipart/form-data" method="post">
+    <input type="file" name="photo"/>
+
+    <button type="submit">Submit</button>
+</form>

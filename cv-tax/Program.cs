@@ -1,7 +1,13 @@
+using cv_tax.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PictureGalleryDatabase") ?? throw new InvalidOperationException("Invalid connection string");
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSqlServer<PictureGalleryDbContext>(connectionString, opts => opts.EnableRetryOnFailure());
 
 var app = builder.Build();
 
