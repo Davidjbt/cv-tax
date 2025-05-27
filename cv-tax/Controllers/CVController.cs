@@ -5,8 +5,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace cv_tax.Controllers {
 
     public class CVController : Controller {
-        public IActionResult Index() {
-            var cv = new CVModel(
+
+        private readonly static CVModel cv = new CVModel(
                 profile: "Despite being a Robotics Engineering student, Software Engineering has always been my passion." +
                 " I am highly procient in\r\nJava, self-taught Back-end Development with Spring," +
                 " and experienced in Python for diverse tasks. Additionally, I learnt\r\nother languages and technologies," +
@@ -25,7 +25,7 @@ namespace cv_tax.Controllers {
                     "● Developed an Android application, with Kotlin, able to web scrape the room timetables, indicated by the\r\n" +
                     "user queries, from the university’s website.\r\n" +
                     "● Utilised Kotlin multithreading capabilities to web scrape multiple room timetables simultaneously.\r\n" +
-                    "● Implemented Google’s Protocol Bufers and Proto Datastore for ecient storage, retrieval, and\r\n" +
+                    "● Implemented Google’s Protocol Buffers and Proto Datastore for efficient storage, retrieval, and\r\n" +
                     "organisation of user queries.\r\n"
                 ],
                 education: [
@@ -43,7 +43,22 @@ namespace cv_tax.Controllers {
                 ]
             );
 
+        public IActionResult Index() {
             return View(cv);
         }
+
+        /// <summary>
+        /// Gets CV
+        /// </summary>
+        /// <returns>A CV</returns>
+        /// <response code="200">Returns the CV</response>
+        [HttpGet]
+        [Route("api/v1/cv")]
+        [ProducesResponseType(typeof(CVModel), StatusCodes.Status200OK)]
+        public IActionResult GetCV() {
+            return Ok(cv);
+        }
     }
+
+
 }
