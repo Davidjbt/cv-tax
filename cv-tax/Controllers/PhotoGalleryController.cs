@@ -24,7 +24,13 @@ namespace cv_tax.Controllers {
         public async Task<IActionResult> Index(IFormFile photo) {
             if (photo == null) return View();
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "gallery", photo.FileName);
+            var galleryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "gallery");
+            
+            if (!Directory.Exists(galleryPath)) {
+                Directory.CreateDirectory(galleryPath);
+            }
+
+            var filePath = Path.Combine(galleryPath, photo.FileName);
             using (var stream = System.IO.File.Create(filePath)) {
                 await photo.CopyToAsync(stream);
             }
