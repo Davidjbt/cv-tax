@@ -1,20 +1,21 @@
 ﻿using System.Threading.Tasks;
 using cv_tax.Data;
 using cv_tax.Models;
+using cv_tax.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace cv_tax.Controllers {
     public class PhotoGalleryController : Controller {
+        
+        private readonly IPictureGalleryRepository<PictureModel> _pictureGalleryRepository;
 
-        private readonly PictureGalleryDbContext _pictureGalleryDbContext;
-
-        public PhotoGalleryController(PictureGalleryDbContext pictureGalleryDbContext) {
-            _pictureGalleryDbContext = pictureGalleryDbContext;
+        public PhotoGalleryController(IPictureGalleryRepository<PictureModel> pictureGalleryRepository) {
+            _pictureGalleryRepository = pictureGalleryRepository;
         }
 
         public async Task<IActionResult> Index() {
-            var pictures = await _pictureGalleryDbContext.Pictures.ToListAsync();
+            var pictures = await _pictureGalleryRepository.FindAllAsync();
 
             return View(pictures);
         }
@@ -29,9 +30,9 @@ namespace cv_tax.Controllers {
             }
 
             var picture = new PictureModel(filePath: photo.FileName);
-            _pictureGalleryDbContext.Add(picture);
-
-            await _pictureGalleryDbContext.SaveChangesAsync();
+            
+            _pictureGalleryRepository.Add(picture);
+            await _pictureGalleryRepository.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -45,7 +46,7 @@ namespace cv_tax.Controllers {
         [Route("api/v1/pictures")]
         [ProducesResponseType(typeof(List<PictureModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPictures() {
-            var pictures = await _pictureGalleryDbContext.Pictures.ToListAsync();
+            var pictures = await _pictureGalleryRepository.FindAllAsync();
             
             return Ok(pictures);
         }
@@ -61,7 +62,7 @@ namespace cv_tax.Controllers {
         [Route("api/v1/pictures/{id}")]
         [ProducesResponseType(typeof(PictureModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPicture(int id) {
-            var picture = await _pictureGalleryDbContext.Pictures.FindAsync(id);
+            var picture = await _pictureGalleryRepository.FindByIdAsync(id);
 
             if (picture == null) return NotFound($"Picture with ID: {id} not found");
 

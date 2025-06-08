@@ -1,5 +1,7 @@
 using System.Reflection;
 using cv_tax.Data;
+using cv_tax.Models;
+using cv_tax.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PictureGalleryDatabase") ?? throw new InvalidOperationException("Invalid connection string");
@@ -17,6 +19,7 @@ builder.Services.AddSwaggerGen(c => {
     c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddScoped<IPictureGalleryRepository<PictureModel>, PictureGalleryRepository<PictureModel>>();
 
 var app = builder.Build();
 
